@@ -31,39 +31,30 @@ function divOperator(leftNode, rightNode) {
 const OperatorMap = {
   "+": addOperator,
   "-": subOperator,
-  "X": mulOperator,
-  "÷": divOperator,
+  "x": mulOperator,
+  ["÷"]: divOperator,
 }
 
 const Node = (operator, value, left, right) => {
+
   const result = function () {
-    switch (this.operator) {
-      case "+":
-        return left.result() + right.result();
-      case "-":
-        return left.result() - right.result();
-      case "x":
-        return left.result() * right.result();
-      case "÷":
-        return left.result() / right.result();
-      default:
-        return value;
+    const operatorFn = OperatorMap[this.operator];
+
+    if (operatorFn && typeof operatorFn === "function") {
+      return operatorFn(this.left, this.right).result();
     }
+
+    return this.value;
   };
 
   const toString = function () {
-    switch (this.operator) {
-      case "+":
-        return `(${left.toString()} + ${right.toString()})`;
-      case "-":
-        return `(${left.toString()} - ${right.toString()})`;
-      case "x":
-        return `(${left.toString()} x ${right.toString()})`;
-      case "÷":
-        return `(${left.toString()} ÷ ${right.toString()})`;
-      default:
-        return value.toString();
+    const operatorFn = OperatorMap[this.operator];
+
+    if (operatorFn && typeof operatorFn === "function") {
+      return operatorFn(this.left, this.right).toString();
     }
+
+    return this.value.toString();
   };
 
   return {
@@ -120,6 +111,6 @@ function testSingleOperator() {
   assert.strictEqual(42, tree.result());
 }
 
-test1();
-testSingleOperator();
 testNoOperator();
+testSingleOperator();
+test1();
