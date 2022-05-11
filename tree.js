@@ -1,5 +1,40 @@
 const assert = require("assert");
 
+function addOperator(leftNode, rightNode) {
+  return {
+    result: () => leftNode.result() + rightNode.result(),
+    toString: () => `(${leftNode.toString()} + ${rightNode.toString()})`
+  }
+}
+
+function subOperator(leftNode, rightNode) {
+  return {
+    result: () => leftNode.result() - rightNode.result(),
+    toString: () => `(${leftNode.toString()} - ${rightNode.toString()})`
+  }
+}
+
+function mulOperator(leftNode, rightNode) {
+  return {
+    result: () => leftNode.result() * rightNode.result(),
+    toString: () => `(${leftNode.toString()} x ${rightNode.toString()})`
+  }
+}
+
+function divOperator(leftNode, rightNode) {
+  return {
+    result: () => leftNode.result() / rightNode.result(),
+    toString: () => `(${leftNode.toString()} ÷ ${rightNode.toString()})`
+  }
+}
+
+const OperatorMap = {
+  "+": addOperator,
+  "-": subOperator,
+  "X": mulOperator,
+  "÷": divOperator,
+}
+
 const Node = (operator, value, left, right) => {
   const result = function () {
     switch (this.operator) {
