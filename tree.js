@@ -41,22 +41,50 @@ const Node = (operator, value, left, right) => {
   };
 };
 
-const tree = Node(
-  "÷",
-  null,
-  Node(
-    "+",
+function test1() {
+  const tree = Node(
+    "÷",
+    null,
+    Node(
+      "+",
+      null,
+      Node("", 7, null, null),
+      Node(
+        "x",
+        null,
+        Node("-", null, Node("", 3, null, null), Node("", 2, null, null)),
+        Node("", 5, null, null)
+      )
+    ),
+    Node("", 6, null, null)
+  );
+
+  assert.strictEqual("((7 + ((3 - 2) x 5)) ÷ 6)", tree.toString());
+  assert.strictEqual(2, tree.result());
+}
+
+function testNoOperator() {
+  const tree = Node(
+    "",
+    7,
+  );
+
+  assert.strictEqual("7", tree.toString());
+  assert.strictEqual(7, tree.result());
+}
+
+function testSingleOperator() {
+  const tree = Node(
+    "x",
     null,
     Node("", 7, null, null),
-    Node(
-      "x",
-      null,
-      Node("-", null, Node("", 3, null, null), Node("", 2, null, null)),
-      Node("", 5, null, null)
-    )
-  ),
-  Node("", 6, null, null)
-);
+    Node("", 6, null, null),
+  );
 
-assert.strictEqual("((7 + ((3 - 2) x 5)) ÷ 6)", tree.toString());
-assert.strictEqual(2, tree.result());
+  assert.strictEqual("(7 x 6)", tree.toString());
+  assert.strictEqual(42, tree.result());
+}
+
+test1();
+testSingleOperator();
+testNoOperator();
